@@ -12,7 +12,7 @@ maxFps:140
 fboEnable:true
 difficulty:2
 fancyGraphics:true
-ao:2
+ao:0
 renderClouds:true
 resourcePacks:[]
 incompatibleResourcePacks:[]
@@ -90,11 +90,12 @@ key_key.hotbar.6:12
 key_key.hotbar.7:488
 key_key.hotbar.8:45
 key_key.hotbar.9:46
-key_AutoClicker:48
-key_Kill Aura:0
-key_Velocity:47
-key_Aim Assist:0
-key_Trigger Bot:33
+key_AutoClicker:80
+key_Velocity:77
+key_Aim Assist:79
+key_Trigger Bot:76
+key_ClickGui:54
+key_ExtraKnockBack:50
 soundCategory_master:0.0
 soundCategory_music:0.0
 soundCategory_record:1.0

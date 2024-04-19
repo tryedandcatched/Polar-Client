@@ -1,5 +1,6 @@
 package com.polarclient.modules.ghost;
 
+import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.Minecraft;
@@ -10,19 +11,34 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import static net.minecraft.util.MovingObjectPosition.MovingObjectType.ENTITY;
 
-public class aimassist {
+public class aimassist extends Module {
+    public static String name = "Aim Assist";
     static Minecraft mc = Minecraft.getMinecraft();
     static EntityPlayerSP player = mc.thePlayer;
     static WorldClient world = mc.theWorld;
-    static int range = 5;
-    static int fov = 75;
+    static float range = 3.5f;
+    static int fov = 50;
     static int speed = 30;
-
+    protected static boolean toggled = false;
+    public aimassist(){
+        setName("Aim Assist");
+    }
+    @Override
+    public void onEnable(){
+        System.out.println(("Enable"));
+        toggled = true;
+    }
+    @Override
+    public void onDisable(){
+        System.out.println(("Disable"));
+        toggled = false;
+    }
     static boolean stopInEntity = true;
     public static Entity getEnemy() {
         Entity entity = null;
@@ -50,11 +66,14 @@ public class aimassist {
     }
 
     @SubscribeEvent
-    public void OnTick(TickEvent.RenderTickEvent te){
+    public void OnTick(TickEvent.RenderTickEvent ev){
         if (Minecraft.getMinecraft().thePlayer == null) {
             return;
         }
-        if (Modules.IsToggled("Aim Assist")){
+        if(Minecraft.getMinecraft().theWorld == null){
+            return;
+        }
+        if (toggled){
             EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
             WorldClient world = Minecraft.getMinecraft().theWorld;
             Entity entity = getEnemy();
@@ -84,10 +103,11 @@ public class aimassist {
         double d = MathHelper.sqrt_double(x * x + z * z);
         float yaw = (float) (Math.atan2(z, x) * 180.0 / Math.PI) - 90.0f;
         float pitch = (float) (-(Math.atan2(y, d) * 180.0 / Math.PI));
-
+        float rnd = (float) (1 + (Math.random() * (5- 1)));
         // make it smoother
-        yaw = mc.thePlayer.rotationYaw + MathHelper.wrapAngleTo180_float(yaw - mc.thePlayer.rotationYaw);
-        pitch = mc.thePlayer.rotationPitch + MathHelper.wrapAngleTo180_float(pitch - mc.thePlayer.rotationPitch);
+        yaw = mc.thePlayer.rotationYaw + MathHelper.wrapAngleTo180_float(yaw - mc.thePlayer.rotationYaw) + rnd;
+        pitch = mc.thePlayer.rotationPitch + MathHelper.wrapAngleTo180_float(pitch - mc.thePlayer.rotationPitch) + rnd;
+
 
         return new float[] { yaw, pitch };
     }

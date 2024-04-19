@@ -2,21 +2,21 @@ package com.polarclient.modules;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Modules {
-    static public List<String> EnabledModules = new ArrayList<String>();
-    public static void Toggle(String name){
-        if (Modules.EnabledModules.contains(name)){
-            Modules.EnabledModules.remove(name);
-            return;
+    static public List<Module> EnabledModules = new ArrayList<Module>();
+    static public List<Module> AllModule = new ArrayList<Module>();
+    public static void Toggle(Module name){
+
+        for (Module module: EnabledModules) {
+            if (Objects.equals(module.getName(), name.getName())){
+                name.onDisable();
+                EnabledModules.remove(module);
+                return;
+            }
         }
         Modules.EnabledModules.add(name);
-    }
-
-    public static boolean IsToggled(String name) {
-        if (Modules.EnabledModules.contains(name)){
-            return true;
-        }
-        return false;
+        name.onEnable();
     }
 }

@@ -4,10 +4,8 @@ import com.example.examplemod.commands.ExampleCommand;
 import com.example.examplemod.config.ConfigHandler;
 import com.example.examplemod.events.ExampleKeybindListener;
 import com.example.examplemod.hud.ExampleHUD;
-import com.polarclient.modules.ghost.aimassist;
-import com.polarclient.modules.ghost.autoclicker;
-import com.polarclient.modules.ghost.trigger_bot;
-import com.polarclient.modules.ghost.velocity;
+import com.polarclient.modules.Modules;
+import com.polarclient.modules.ghost.*;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -50,6 +48,7 @@ public class ExampleMod { // select ExampleMod and hit shift+F6 to rename it
         MinecraftForge.EVENT_BUS.register(new velocity());
         MinecraftForge.EVENT_BUS.register(new aimassist());
         MinecraftForge.EVENT_BUS.register(new trigger_bot());
+        MinecraftForge.EVENT_BUS.register(new extraknockback());
 
         if (Loader.isModLoaded("patcher")) {
             // this code will only run if the mod with id "patcher" is loaded

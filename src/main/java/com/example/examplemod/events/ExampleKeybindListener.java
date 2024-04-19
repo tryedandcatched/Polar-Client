@@ -1,6 +1,8 @@
 package com.example.examplemod.events;
 
+import com.polarclient.modules.Gui;
 import com.polarclient.modules.Modules;
+import com.polarclient.modules.ghost.*;
 import ibxm.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -8,23 +10,26 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.network.internal.FMLMessage;
 import org.lwjgl.input.Keyboard;
 
 public class ExampleKeybindListener {
 
-    private final KeyBinding autokeybind = new KeyBinding("AutoClicker", Keyboard.KEY_J, "polar client");
-    private final KeyBinding killaurakeybind = new KeyBinding("Kill Aura", Keyboard.KEY_F, "polar client");
-    private final KeyBinding velocitykeybind = new KeyBinding("Velocity", Keyboard.KEY_K, "polar client");
-    private final KeyBinding aimkeybind = new KeyBinding("Aim Assist", Keyboard.KEY_NONE, "polar client");
-    private final KeyBinding triggerbind = new KeyBinding("Trigger Bot", Keyboard.KEY_NONE, "polar client");
+    public final KeyBinding autokeybind = new KeyBinding("AutoClicker", Keyboard.KEY_J, "polar client");
+    public final KeyBinding velocitykeybind = new KeyBinding("Velocity", Keyboard.KEY_K, "polar client");
+    public final KeyBinding aimkeybind = new KeyBinding("Aim Assist", Keyboard.KEY_NONE, "polar client");
+    public final KeyBinding triggerbind = new KeyBinding("Trigger Bot", Keyboard.KEY_NONE, "polar client");
+    public final KeyBinding guikebind = new KeyBinding("ClickGui", Keyboard.KEY_RSHIFT, "polar client");
+    public final KeyBinding extraknockbind = new KeyBinding("ExtraKnockBack", Keyboard.KEY_NONE, "polar client");
 
     public ExampleKeybindListener() {
         // you need to register your keybind for it to show up in the settings menu
         ClientRegistry.registerKeyBinding(autokeybind);
-        ClientRegistry.registerKeyBinding(killaurakeybind);
         ClientRegistry.registerKeyBinding(velocitykeybind);
         ClientRegistry.registerKeyBinding(aimkeybind);
         ClientRegistry.registerKeyBinding(triggerbind);
+        ClientRegistry.registerKeyBinding(guikebind);
+        ClientRegistry.registerKeyBinding(extraknockbind);
     }
 
 
@@ -33,20 +38,24 @@ public class ExampleKeybindListener {
         // this method runs everytime a key on the keyboard is pressed / unpressed
 
 
-        if (killaurakeybind.isPressed()) {
-            Modules.Toggle("Kill Aura");
-        }
         if (autokeybind.isPressed()) { // using isPressed() will return true once when the key is pressed
-            Modules.Toggle("Auto Clicker");
+            Modules.Toggle(new autoclicker());
         }
         if (velocitykeybind.isPressed()) {
-            Modules.Toggle("Velocity");
+            Modules.Toggle(new velocity());
         }
         if (aimkeybind.isPressed()){
-            Modules.Toggle("Aim Assist");
+            Modules.Toggle(new aimassist());
         }
         if (triggerbind.isPressed()){
-            Modules.Toggle("Trigger Bot");
+            Modules.Toggle(new trigger_bot());
+        }
+        if(guikebind.isPressed()){
+
+            Minecraft.getMinecraft().displayGuiScreen(new Gui());
+        }
+        if (extraknockbind.isPressed()){
+            Modules.Toggle(new extraknockback());
         }
     }
 }
