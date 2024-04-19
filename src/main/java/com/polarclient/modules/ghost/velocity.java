@@ -1,5 +1,6 @@
 package com.polarclient.modules.ghost;
 
+import java.util.Objects;
 import java.util.concurrent.Executors;
 import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import org.lwjgl.input.Mouse;
 import utils.Player;
 
@@ -40,33 +42,35 @@ public class velocity extends Module {
     private static String mode = "";
     @Override
     public String getMode() {
+        if (Objects.equals(mode, "Reduce")){
+            return "Reduce   ";
+        }
         return mode;
     }
     @SubscribeEvent
-    public void OnTick(TickEvent.RenderTickEvent ev) throws AWTException {
+    public void OnTick(TickEvent.ClientTickEvent ev) throws AWTException {
         if (mc.thePlayer == null)
             return;
         if (toggled){
+            if(Objects.equals(mode, "Reduce")) Reduce();
+            if(Objects.equals(mode, "JumpReset")) JumpReset();
             if (tickIntervale != 0){
                 tickIntervale--;
                 return;
             }
-            switch (rand.nextInt(2)){
-                case 0 : {
-                    Reduce();
-                }
-                case 1 : {
-                    JumpReset();
-                }
-            }
-
+            tickIntervale = 10;
+            int rng = rand.nextInt(100) % 100;
+            if (rng > 50)
+                    mode = "Reduce";
+            else
+                    mode = "JumpReset";
         }
     }
     private void Reduce(){
+        mode = "Reduce";
         int htime = mc.thePlayer.hurtTime;
         if(htime == 1+(7+rand.nextInt(8))%8){
             if(utils.Mouse.AimingAsEntity()) {
-                mode = "Reduce";
                 for (int i = 0; i < (3 + rand.nextInt(5)); i++) {
                     utils.Mouse.Lclick();
                 }
@@ -75,9 +79,9 @@ public class velocity extends Module {
         }
     }
     private void JumpReset(){
+        mode = "JumpReset";
         if (mc.thePlayer.hurtTime > 0 && mc.thePlayer.onGround) {
             if (rand.nextDouble() < 0.4) {
-                mode = "JumpReset";
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), true);
                 KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), false);
             }

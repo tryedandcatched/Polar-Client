@@ -3,6 +3,7 @@ package com.example.examplemod.hud;
 import com.polarclient.modules.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.scoreboard.ScoreObjective;
@@ -68,18 +69,30 @@ public class ExampleHUD {
         int padding_incrementing = 9;
         int padding_height = 8;
 
+        Comparator<Module> c = (module1, module2) -> {
+            // Calculate the length of the concatenation of name and mode for each module
+            int length1 = module1.getName().length() + module1.getMode().length();
+            int length2 = module2.getName().length() + module2.getMode().length();
+            // Compare the lengths
+            return Integer.compare(length2, length1);
+        };
         List<Module> modules = new ArrayList<Module>(Modules.EnabledModules);
-        //modules.sort(c);
+        modules.sort(c);
 
+        int max_right = 0 ;
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.2f, 1.2f, 1.2f);
         for (Module module: modules)
         {
+            String mode = "<" + module.getMode() + ">";
+            int righ=2 + fr.getStringWidth(module.getName()+mode) + 5;
+            if (righ > max_right){
+                max_right = righ;
+            }
+            drawRect(2, first_padding + padding_height - 2, max_right, first_padding + padding_height + 10, 0xFF000000);
             String str = module.getName();
             fr.drawStringWithShadow(str, 2,first_padding+padding_height,0xcaa1e0);
-            System.out.println("Mode: " + module.getMode());
             if (!Objects.equals(module.getMode(), "")){
-                String mode = "<" + module.getMode() + ">";
                 fr.drawStringWithShadow(mode, 2 + fr.getStringWidth(str) + 5,
                         first_padding + padding_height,
                         0xcaa000);
@@ -87,6 +100,9 @@ public class ExampleHUD {
             padding_height+=padding_incrementing;
         }
         GlStateManager.popMatrix();
+    }
+    private static void drawRect(int left, int top, int right, int bottom, int color) {
+        GuiScreen.drawRect(left, top, right, bottom, color);
     }
 
 }

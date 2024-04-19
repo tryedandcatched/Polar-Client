@@ -59,8 +59,8 @@ public class autoclicker extends Module {
                     clickCounter--;
                     return;
                 }
-                clickCounter = 5;
                 if (Objects.requireNonNull(mc.objectMouseOver.typeOfHit) == MovingObjectPosition.MovingObjectType.BLOCK) {
+                    clickCounter = 3;
                     utils.Mouse.Rclick();
                 }
             }
