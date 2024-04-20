@@ -2,10 +2,12 @@ package com.polarclient.modules.Gui;
 
 import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
+import com.polarclient.modules.setting.Setting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.xml.soap.Text;
@@ -17,6 +19,8 @@ public class Gui extends GuiScreen {
     private List<TextButton> button = new ArrayList<TextButton>();
     private boolean isMenuToggled = false;
     private Module toggledModule;
+    private int mouseX;
+    private int mouseY;
     @Override
     public void drawScreen(int x, int y, float ticks) {
         GL11.glColor4f(1, 1, 1, 1);
@@ -58,6 +62,8 @@ public class Gui extends GuiScreen {
             }
             buttonY += padding;
         }
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
 
         super.drawScreen(x, y, ticks);
     }
@@ -76,6 +82,45 @@ public class Gui extends GuiScreen {
         int titleX = (rectX + 15); // Center horizontally
         int titleY = rectY + (fr.FONT_HEIGHT) + 5; // Center vertically
         fr.drawString(title, titleX, titleY, 0xFFFFFFFF);
+        int padding = 15;
+
+        for (Setting s : module.settingList){
+            String sName = s.name;
+            System.out.println(sName);
+            titleX = (rectX + 15); // Center horizontally
+            titleY = padding + rectY + (fr.FONT_HEIGHT) + 5; // Center vertically
+            fr.drawString(sName, titleX, titleY, 0xFFFFFFFF);
+            switch (s.getType()){
+                case Slider : {
+                    int sliderWidth = 100;
+                    int sliderHeight = 10;
+                    int sliderX = rectX + 15;
+                    int sliderY = titleY + 15;
+                    int minValue = s.getMinvalue(); // Adjust minimum value
+                    int maxValue = s.getMaxvalue(); // Adjust maximum value
+                    float valueRange = maxValue - minValue;
+                    float sliderValue = (float) s.getValue();
+                    int sliderPosX = (int) (sliderX + (sliderValue - minValue) / valueRange * (sliderWidth - 6));
+                    int sliderPosY = sliderY + 1;
+                    Slider slider = new Slider(sliderX, sliderY, sliderWidth, sliderHeight, minValue, maxValue, sliderValue);
+                    slider.draw(mc, mouseX, mouseY); // Draw the slider
+                    // Handle mouse events for the slider
+                    if (mouseX >= sliderX && mouseX <= sliderX + sliderWidth && mouseY >= sliderY && mouseY <= sliderY + sliderHeight) {
+                        Mouse.poll();
+                        if (Mouse.isButtonDown(0)) { // Left mouse button
+                            slider.mouseClicked(mouseX, mouseY);
+                        }
+                    }
+                    break;
+
+                }
+
+                case Checkbox : {
+
+                }
+            }
+            padding += 15;
+        }
 
     }
 

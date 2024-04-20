@@ -7,6 +7,7 @@ import com.example.examplemod.hud.ExampleHUD;
 import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
 import com.polarclient.modules.ghost.*;
+import com.polarclient.modules.blatant.scaffold;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -51,18 +52,21 @@ public class ExampleMod { // select ExampleMod and hit shift+F6 to rename it
         Module aimassist = new aimassist();
         Module trigger_bot = new trigger_bot();
         Module extraknockback = new extraknockback();
+        Module scaffold = new scaffold();
 
         MinecraftForge.EVENT_BUS.register(autoclicker);
         MinecraftForge.EVENT_BUS.register(velocity);
         MinecraftForge.EVENT_BUS.register(aimassist);
         MinecraftForge.EVENT_BUS.register(trigger_bot);
         MinecraftForge.EVENT_BUS.register(extraknockback);
+        MinecraftForge.EVENT_BUS.register(scaffold);
 
         Modules.AllModule.add(autoclicker);
         Modules.AllModule.add(velocity);
         Modules.AllModule.add(aimassist);
         Modules.AllModule.add(trigger_bot);
         Modules.AllModule.add(extraknockback);
+        Modules.AllModule.add(scaffold);
 
         if (Loader.isModLoaded("patcher")) {
             // this code will only run if the mod with id "patcher" is loaded

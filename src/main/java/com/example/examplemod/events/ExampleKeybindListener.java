@@ -2,6 +2,7 @@ package com.example.examplemod.events;
 
 import com.polarclient.modules.Gui.Gui;
 import com.polarclient.modules.Modules;
+import com.polarclient.modules.blatant.scaffold;
 import com.polarclient.modules.ghost.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -18,6 +19,7 @@ public class ExampleKeybindListener {
     public final KeyBinding triggerbind = new KeyBinding("Trigger Bot", Keyboard.KEY_NONE, "polar client");
     public final KeyBinding guikebind = new KeyBinding("ClickGui", Keyboard.KEY_RSHIFT, "polar client");
     public final KeyBinding extraknockbind = new KeyBinding("ExtraKnockBack", Keyboard.KEY_NONE, "polar client");
+    public final KeyBinding scaffoldbind = new KeyBinding("Scaffold", Keyboard.KEY_G, "polar client");
 
     public ExampleKeybindListener() {
         // you need to register your keybind for it to show up in the settings menu
@@ -27,6 +29,7 @@ public class ExampleKeybindListener {
         ClientRegistry.registerKeyBinding(triggerbind);
         ClientRegistry.registerKeyBinding(guikebind);
         ClientRegistry.registerKeyBinding(extraknockbind);
+        ClientRegistry.registerKeyBinding(scaffoldbind);
     }
 
 
@@ -53,6 +56,9 @@ public class ExampleKeybindListener {
         }
         if (extraknockbind.isPressed()){
             Modules.Toggle(new extraknockback());
+        }
+        if (scaffoldbind.isPressed()){
+            Modules.Toggle(new scaffold());
         }
     }
 }

@@ -2,6 +2,8 @@ package com.polarclient.modules.ghost;
 
 import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
+import com.polarclient.modules.setting.Setting;
+import com.polarclient.modules.setting.settingType;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -26,8 +28,13 @@ public class aimassist extends Module {
     static int fov = 50;
     static int speed = 30;
     protected static boolean toggled = false;
+    private Setting speedSetting = new Setting();
     public aimassist(){
         setName("Aim Assist");
+        speedSetting.setType(settingType.Slider);
+        speedSetting.name = "Speed";
+        speedSetting.setValue(this.speed);
+        settingList.add(speedSetting);
     }
     @Override
     public void onEnable(){
@@ -74,6 +81,7 @@ public class aimassist extends Module {
             return;
         }
         if (toggled){
+            this.speed = this.speedSetting.getValue();
             EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
             WorldClient world = Minecraft.getMinecraft().theWorld;
             Entity entity = getEnemy();
