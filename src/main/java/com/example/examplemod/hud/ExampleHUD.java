@@ -58,11 +58,11 @@ public class ExampleHUD {
         GlStateManager.pushMatrix();
         GlStateManager.scale(2F, 2F, 2F);
         fr.drawStringWithShadow(text1, 5, 5, 0xCFC7FC);
-        fr.drawStringWithShadow(text2, (8+fr.getStringWidth(text1)), 5, 0x9f8ff7);
+        fr.drawStringWithShadow(text2, (8 + fr.getStringWidth(text1)), 5, 0x9f8ff7);
         GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         GlStateManager.scale(1F, 1F, 1F);
-        fr.drawStringWithShadow(text3, (8+fr.getStringWidth(text1)+fr.getStringWidth(text2)*3), 8, 0x9f8ff7);
+        fr.drawStringWithShadow(text3, (8 + fr.getStringWidth(text1) + fr.getStringWidth(text2) * 3), 8, 0x9f8ff7);
         GlStateManager.popMatrix();
 
         int first_padding = 20;
@@ -79,30 +79,43 @@ public class ExampleHUD {
         List<Module> modules = new ArrayList<Module>(Modules.EnabledModules);
         modules.sort(c);
 
-        int max_right = 0 ;
+        int max_right = 0;
         GlStateManager.pushMatrix();
         GlStateManager.scale(1.2f, 1.2f, 1.2f);
-        for (Module module: modules)
-        {
+        for (Module module : modules) {
             String mode = "<" + module.getMode() + ">";
-            int righ=2 + fr.getStringWidth(module.getName()+mode) + 5;
-            if (righ > max_right){
+            int righ = 2 + fr.getStringWidth(module.getName() + mode) + 5;
+            if (righ > max_right) {
                 max_right = righ;
             }
-            drawRect(2, first_padding + padding_height - 2, max_right, first_padding + padding_height + 10, 0xFF000000);
+            drawSmoothRect(2, first_padding + padding_height - 2, max_right, first_padding + padding_height + 10, 0xFF000000);
             String str = module.getName();
-            fr.drawStringWithShadow(str, 2,first_padding+padding_height,0xcaa1e0);
-            if (!Objects.equals(module.getMode(), "")){
+            fr.drawStringWithShadow(str, 2, first_padding + padding_height, 0xcaa1e0);
+            if (!Objects.equals(module.getMode(), "")) {
                 fr.drawStringWithShadow(mode, 2 + fr.getStringWidth(str) + 5,
                         first_padding + padding_height,
                         0xcaa000);
             }
-            padding_height+=padding_incrementing;
+            padding_height += padding_incrementing;
         }
         GlStateManager.popMatrix();
     }
+
     private static void drawRect(int left, int top, int right, int bottom, int color) {
         GuiScreen.drawRect(left, top, right, bottom, color);
     }
 
+    private static void drawSmoothRect(int left, int top, int wY, int wX, int color) {
+        int right = wY;
+        int bottom = wX;
+        GuiScreen.drawRect(left + 1, top + 1, right - 1, bottom - 1, color); // Draw inner rectangle
+
+        // Draw smooth border
+        for (int i = 0; i < 2; i++) {
+            GuiScreen.drawRect(left + i, top + i, right - i, top + i + 1, color); // Top border
+            GuiScreen.drawRect(left + i, bottom - i - 1, right - i, bottom - i, color); // Bottom border
+            GuiScreen.drawRect(left + i, top + 1, left + i + 1, bottom - 1, color); // Left border
+            GuiScreen.drawRect(right - i - 1, top + 1, right - i, bottom - 1, color); // Right border
+        }
+    }
 }

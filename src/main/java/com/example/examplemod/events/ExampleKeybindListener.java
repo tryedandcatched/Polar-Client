@@ -1,16 +1,13 @@
 package com.example.examplemod.events;
 
-import com.polarclient.modules.Gui;
+import com.polarclient.modules.Gui.Gui;
 import com.polarclient.modules.Modules;
 import com.polarclient.modules.ghost.*;
-import ibxm.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.network.internal.FMLMessage;
 import org.lwjgl.input.Keyboard;
 
 public class ExampleKeybindListener {
