@@ -3,6 +3,7 @@ package com.polarclient.modules;
 public class Module {
     protected String name = "example module";
     protected String mode = "";
+    protected boolean toggled = false;
 
     public void onEnable(){
     }
@@ -20,6 +21,10 @@ public class Module {
 
     public String getMode() {
         return this.mode;
+    }
+
+    public void drawMenu(){
+
     }
 
     public void setMode(String mode) {
