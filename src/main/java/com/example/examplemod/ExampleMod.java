@@ -73,6 +73,7 @@ public class ExampleMod { // select ExampleMod and hit shift+F6 to rename it
         Modules.AllModule.add(trigger_bot);
         Modules.AllModule.add(extraknockback);
         Modules.AllModule.add(scaffold);
+        Modules.AllModule.add(tickbase);
         Modules.AllModule.add(cheststealer);
 
         if (Loader.isModLoaded("patcher")) {
