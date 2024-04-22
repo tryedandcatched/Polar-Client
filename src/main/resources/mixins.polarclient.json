@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "package": "com.polarclient.mixin.mixins",
+  "refmap": "mixins.polarclient.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "SpoofRotation"
+  ]
+}

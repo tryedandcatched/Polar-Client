@@ -106,11 +106,12 @@ public class Gui extends GuiScreen {
         }
 
 
-        int padding = 5;
+        int padding = 15;
         for (Setting s : module.settingList){
-            String sName = s.name;
+            String sName = s.getName();
             titleX = (rectX + 15); // Center horizontally
             titleY = padding + rectY + (fr.FONT_HEIGHT) + 5; // Center vertically
+            fr.drawString(sName, titleX, titleY, 0xffffff);
 
             switch (s.getType()){
                 case Slider : {
@@ -120,22 +121,13 @@ public class Gui extends GuiScreen {
                     int sliderY = titleY + 15;
                     int minValue = s.getMinvalue(); // Adjust minimum value
                     int maxValue = s.getMaxvalue(); // Adjust maximum value
-                    float valueRange = maxValue - minValue;
                     float sliderValue = (float) s.getValue();
-                    int sliderPosX = (int) (sliderX + (sliderValue - minValue) / valueRange * (sliderWidth - 6));
-                    int sliderPosY = sliderY + 1;
                     Slider slider = new Slider(sliderX, sliderY, sliderWidth, sliderHeight, minValue, maxValue, sliderValue);
                     slider.draw(mc, mouseX, mouseY); // Draw the slider
                     s.setValue((int)slider.getValue());
-                    break;
-
-                }
-
-                case Checkbox : {
-
                 }
             }
-            padding += 15;
+            padding += 25;
         }
 
     }

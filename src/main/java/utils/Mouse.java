@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.util.BlockPos;
 
 public class Mouse {
-    private static Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
 
     public static void Lclick(){
         int key = mc.gameSettings.keyBindAttack.getKeyCode();

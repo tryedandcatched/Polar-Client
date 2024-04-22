@@ -33,10 +33,10 @@ public class aimassist extends Module {
     public aimassist(){
         setName("Aim Assist");
         speedSetting.setType(settingType.Slider);
-        speedSetting.name = "Speed";
+        speedSetting.setName("Speed");
         speedSetting.setMaxValue(100);
         speedSetting.setMinValue(0);
-        speedSetting.setValue(this.speed);
+        speedSetting.setValue(speed);
         settingList.add(speedSetting);
     }
     @Override
@@ -116,7 +116,7 @@ public class aimassist extends Module {
                     mc.thePlayer.rotationYaw = mc.thePlayer.rotationYaw + (yaw - mc.thePlayer.rotationYaw) ;
                     mc.thePlayer.rotationPitch = mc.thePlayer.rotationPitch + (pitch - mc.thePlayer.rotationPitch) ;
                 } else {
-                    speed = speedSetting.getValue() - 100;
+                    speed = speedSetting.getValue();
                     mc.thePlayer.rotationYaw = mc.thePlayer.rotationYaw + (yaw - mc.thePlayer.rotationYaw) / speed;
                     mc.thePlayer.rotationPitch = mc.thePlayer.rotationPitch + (pitch - mc.thePlayer.rotationPitch) / (speed * 10);
                 }

@@ -108,13 +108,15 @@ public class scaffold extends Module {
         float lastYaw = player.rotationYaw;
         boolean isRoationGood = true;
         if (Math.round(lastPitch) != newPitch) {
+            int pitchDifference = Math.abs(newPitch - Math.round(lastPitch)); // Calculate the difference between current and new pitch
+            int pitchIncrement = Math.max(1, Math.min(10, pitchDifference)); // Adjust the pitch increment based on pitch difference, limited to 1 and 10
             if (newPitch > Math.round(lastPitch)) {
                 player.setPositionAndRotation2(
                         mc.thePlayer.getPositionVector().xCoord,
                         mc.thePlayer.getPositionVector().yCoord,
                         mc.thePlayer.getPositionVector().zCoord,
                         mc.thePlayer.rotationYaw,
-                        mc.thePlayer.rotationPitch += 1,
+                        mc.thePlayer.rotationPitch += pitchIncrement,
                         1,
                         false
                 );
@@ -125,7 +127,7 @@ public class scaffold extends Module {
                         mc.thePlayer.getPositionVector().yCoord,
                         mc.thePlayer.getPositionVector().zCoord,
                         mc.thePlayer.rotationYaw,
-                        mc.thePlayer.rotationPitch -= 1,
+                        mc.thePlayer.rotationPitch -= pitchIncrement,
                         1,
                         false
                 );
@@ -142,7 +144,6 @@ public class scaffold extends Module {
             }
         }
         if(isRoationGood){
-
             Mouse.Rclick();
         }
         //player.rotationPitch = -90.0F;

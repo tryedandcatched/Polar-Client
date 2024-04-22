@@ -5,9 +5,14 @@ buildscript {
             name = "forge"
             url = 'https://maven.minecraftforge.net/'
         }
+        maven {
+            name = "SpongePowered"
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
     }
 }
 plugins {
@@ -15,6 +20,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "2.0.4"
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
 
 version = "1.0"              // replace with the version of your mod that you have in your main mod file
 group = "com.polar.client" // replace with your package name see http://maven.apache.org/guides/mini/guide-naming-conventions.htm
@@ -28,4 +34,49 @@ minecraft {
     runDir = "run"
     mappings = "stable_22"
     makeObfSourceJar = false
+}
+
+repositories {
+    maven {
+        name = "spongepowered-repo"
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+}
+
+
+configurations {
+    shade
+    compile.extendsFrom(shade)
+}
+
+
+
+sourceSets {
+    main {
+        //ext.refMap = "mixins.polarclient.json"
+    }
+}
+
+shadowJar {
+    dependencies {}
+    configurations = [project.configurations.shade] // Adds the gradle configuration "shade" so we can use it.
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE // Prevents duplicates
+    classifier ""
+}
+
+dependencies {
+    shade('org.spongepowered:mixin:0.6-SNAPSHOT') {
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+        exclude module: 'log4j-core'
+    }
+    shade('net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'){
+        exclude module: 'launchwrapper'
+        exclude module: 'guava'
+        exclude module: 'gson'
+        exclude module: 'commons-io'
+        exclude module: 'log4j-core'
+    }
 }

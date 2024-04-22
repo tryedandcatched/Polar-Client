@@ -6,7 +6,9 @@ import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ChatComponentText;
+import org.lwjgl.Sys;
 
 public class Player {
 
@@ -29,7 +31,10 @@ public class Player {
         for (Object o : mc.theWorld.loadedEntityList) {
             if (o instanceof EntityLivingBase) {
                 EntityLivingBase e = (EntityLivingBase) o;
-                if (e != mc.thePlayer && e.getDistanceToEntity(mc.thePlayer) <= range) {
+                if (e != mc.thePlayer && e.getDistanceToEntity(mc.thePlayer) <= range && e.ticksExisted>5) {
+                    if (e.isCreatureType(EnumCreatureType.CREATURE, true)){
+                        System.out.println(e.getDisplayName().toString().contains("player"));
+                    }
                     return true;
                 }
             }
