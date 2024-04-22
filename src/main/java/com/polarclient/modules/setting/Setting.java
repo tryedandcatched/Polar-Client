@@ -21,10 +21,15 @@ public class Setting {
         return value;
     }
 
-    public int getMinvalue() {return this.Minvalue;}
-    public int getMaxvalue() {return this.Maxvalue;}
+    public int getMinvalue() {return Minvalue;}
+    public int getMaxvalue() {return Maxvalue;}
 
     public void setValue(int value) {
-        this.value = value;
+        Setting.value = value;
+    }
+    public void setMaxValue(int value){
+        Maxvalue = value;
+    }public void setMinValue(int value){
+        Minvalue = value;
     }
 }

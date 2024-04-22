@@ -2,6 +2,7 @@ package com.polarclient.modules.ghost;
 
 import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
+import com.polarclient.modules.blatant.tickbase;
 import com.polarclient.modules.setting.Setting;
 import com.polarclient.modules.setting.settingType;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -33,6 +34,8 @@ public class aimassist extends Module {
         setName("Aim Assist");
         speedSetting.setType(settingType.Slider);
         speedSetting.name = "Speed";
+        speedSetting.setMaxValue(100);
+        speedSetting.setMinValue(0);
         speedSetting.setValue(this.speed);
         settingList.add(speedSetting);
     }
@@ -59,6 +62,13 @@ public class aimassist extends Module {
                     float pitch = angle[1];
                     float yawDifference = Math.abs(mc.thePlayer.rotationYaw - yaw);
                     float pitchDifference = Math.abs(mc.thePlayer.rotationPitch - pitch);
+                    int lastfov = fov;
+                    if (System.currentTimeMillis() - tickbase.lastTime > 0 &&
+                            System.currentTimeMillis() - tickbase.lastTime < 350) {
+                        fov = 360;
+                    } else {
+                        fov = lastfov;
+                    }
                     if (yawDifference <= (float) fov && pitchDifference <= (float) fov) {
                         if (entity == null) {
                             entity = e;
@@ -99,8 +109,17 @@ public class aimassist extends Module {
                     float rotaionValue = (mc.thePlayer.rotationYaw) + (yaw - mc.thePlayer.rotationYaw);
                     float rotationPitch = (mc.thePlayer.rotationPitch) + (pitch - mc.thePlayer.rotationPitch);
                     //make it smooth
+
+                boolean shouldInstante = tickbase.afterTickbase;
+                if (System.currentTimeMillis() - tickbase.lastTime > 0 &&
+                        System.currentTimeMillis() - tickbase.lastTime < 300) {
+                    mc.thePlayer.rotationYaw = mc.thePlayer.rotationYaw + (yaw - mc.thePlayer.rotationYaw) ;
+                    mc.thePlayer.rotationPitch = mc.thePlayer.rotationPitch + (pitch - mc.thePlayer.rotationPitch) ;
+                } else {
+                    speed = speedSetting.getValue() - 100;
                     mc.thePlayer.rotationYaw = mc.thePlayer.rotationYaw + (yaw - mc.thePlayer.rotationYaw) / speed;
                     mc.thePlayer.rotationPitch = mc.thePlayer.rotationPitch + (pitch - mc.thePlayer.rotationPitch) / (speed * 10);
+                }
             }
         }
     }

@@ -16,6 +16,9 @@ public class Module {
 
     private Minecraft mc = Minecraft.getMinecraft();
 
+    public boolean isToggled(){
+        return toggled;
+    }
     public void onEnable(){
         toggled = true;
     }
@@ -39,7 +42,6 @@ public class Module {
     public void drawMenu(){
 
     }
-
     public void setMode(String mode) {
         this.mode = mode;
     }

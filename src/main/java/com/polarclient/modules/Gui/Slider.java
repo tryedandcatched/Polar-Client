@@ -3,6 +3,8 @@ package com.polarclient.modules.Gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import org.lwjgl.input.Mouse;
+import scala.swing.event.MouseClicked;
 
 public class Slider {
     private int x;
@@ -22,7 +24,7 @@ public class Slider {
         this.height = height;
         this.minValue = minValue;
         this.maxValue = maxValue;
-        this.value = clamp(initialValue, minValue, maxValue);
+        this.value = initialValue;
     }
 
     public void draw(Minecraft mc, int mouseX, int mouseY) {
@@ -32,25 +34,21 @@ public class Slider {
         int knobX = x + (int) ((value - minValue) / (maxValue - minValue) * (width - 6));
         int knobY = y;
         GuiScreen.drawRect(knobX, knobY, knobX + 6, knobY + height, isDragging ? 0xFF00FF00 : 0xFFFF0000);
+        mouseClicked(mouseX, mouseY);
     }
 
     public void mouseClicked(int mouseX, int mouseY) {
-        if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height) {
-            isDragging = true;
-            dragOffset = mouseX - x - (int) ((value - minValue) / (maxValue - minValue) * (width - 6));
+        Mouse.poll();
+        if (mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height && Mouse.isButtonDown(0)) {
+            int knobX = x + (int) ((value - minValue) / (maxValue - minValue) * (width - 6));
+            if (mouseX > knobX) {
+                value+=1;
+            } else {
+                value-=1;
+            }
         }
     }
 
-    public void mouseReleased(int mouseX, int mouseY) {
-        isDragging = false;
-    }
-
-    public void mouseDragged(int mouseX, int mouseY) {
-        if (isDragging) {
-            int newValue = clamp(mouseX - x - dragOffset, 0, width - 6);
-            value = minValue + ((float) newValue / (width - 6)) * (maxValue - minValue);
-        }
-    }
 
     public float getValue() {
         return value;

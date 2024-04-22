@@ -6,6 +6,7 @@ import com.example.examplemod.events.ExampleKeybindListener;
 import com.example.examplemod.hud.ExampleHUD;
 import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
+import com.polarclient.modules.blatant.tickbase;
 import com.polarclient.modules.ghost.*;
 import com.polarclient.modules.blatant.scaffold;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -53,6 +54,7 @@ public class ExampleMod { // select ExampleMod and hit shift+F6 to rename it
         Module trigger_bot = new trigger_bot();
         Module extraknockback = new extraknockback();
         Module scaffold = new scaffold();
+        Module tickbase = new tickbase();
 
         MinecraftForge.EVENT_BUS.register(autoclicker);
         MinecraftForge.EVENT_BUS.register(velocity);
@@ -60,6 +62,7 @@ public class ExampleMod { // select ExampleMod and hit shift+F6 to rename it
         MinecraftForge.EVENT_BUS.register(trigger_bot);
         MinecraftForge.EVENT_BUS.register(extraknockback);
         MinecraftForge.EVENT_BUS.register(scaffold);
+        MinecraftForge.EVENT_BUS.register(tickbase);
 
         Modules.AllModule.add(autoclicker);
         Modules.AllModule.add(velocity);
@@ -67,6 +70,7 @@ public class ExampleMod { // select ExampleMod and hit shift+F6 to rename it
         Modules.AllModule.add(trigger_bot);
         Modules.AllModule.add(extraknockback);
         Modules.AllModule.add(scaffold);
+        Modules.AllModule.add(tickbase);
 
         if (Loader.isModLoaded("patcher")) {
             // this code will only run if the mod with id "patcher" is loaded

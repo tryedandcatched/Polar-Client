@@ -3,10 +3,12 @@ package com.polarclient.modules.Gui;
 import com.polarclient.modules.Module;
 import com.polarclient.modules.Modules;
 import com.polarclient.modules.setting.Setting;
+import gnu.trove.impl.hash.TCharHash;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -21,8 +23,13 @@ public class Gui extends GuiScreen {
     private Module toggledModule;
     private int mouseX;
     private int mouseY;
+    private float ticks;
     @Override
     public void drawScreen(int x, int y, float ticks) {
+        this.mouseX = x;
+        this.mouseY = y;
+        this.ticks = ticks;
+
         GL11.glColor4f(1, 1, 1, 1);
         drawDefaultBackground();
         // mc.getTextureManager().bindTexture(new ResourceLocation("polarclient", "gui.png"));
@@ -62,16 +69,14 @@ public class Gui extends GuiScreen {
             }
             buttonY += padding;
         }
-        this.mouseX = mouseX;
-        this.mouseY = mouseY;
 
         super.drawScreen(x, y, ticks);
     }
     private void drawModuleMenu(Module module){
         final FontRenderer fr = new FontRenderer(mc.gameSettings, new ResourceLocation("polarclient", "ascii.png"), mc.renderEngine, true);
 
-        int rectWidth = 500; // Adjust width of the rectangle
-        int rectHeight = 400; // Adjust height of the rectangle
+        int rectWidth = 300; // Adjust width of the rectangle
+        int rectHeight = 200; // Adjust height of the rectangle
         int rectX = (this.width - rectWidth) / 2; // Center horizontally
         int rectY = (this.height - rectHeight) / 2; // Center vertically
         int rectColor = 0x80000000; // Adjust color of the rectangle
@@ -80,16 +85,33 @@ public class Gui extends GuiScreen {
         String title = module.getName();
         int titleWidth = fr.getStringWidth(title);
         int titleX = (rectX + 15); // Center horizontally
-        int titleY = rectY + (fr.FONT_HEIGHT) + 5; // Center vertically
+        int titleY = rectY + (fr.getStringWidth(title))-15; // Center vertically
         fr.drawString(title, titleX, titleY, 0xFFFFFFFF);
-        int padding = 15;
 
+        int checkX = rectX + 150; // Adjust horizontally
+        int checkY = rectY + 25; // Adjust vertically
+        int checkSize = 10; // Size of the checkbox
+
+
+        int basecolor = 0xFFb7a5b3;
+        int basecolorhover = 0xffc187b6;
+        if (Modules.EnabledModules.contains(module)){
+            basecolor = 0xffdc00f4;
+            basecolorhover = 0xff92259e;
+        }
+        Checkbox a =new Checkbox(0, checkX, checkY, checkSize, checkSize, basecolor,basecolorhover);
+        a.drawButton(mc, mouseX,mouseY,ticks);
+        if (a.onClick()){
+            Modules.Toggle(module);
+        }
+
+
+        int padding = 5;
         for (Setting s : module.settingList){
             String sName = s.name;
-            System.out.println(sName);
             titleX = (rectX + 15); // Center horizontally
             titleY = padding + rectY + (fr.FONT_HEIGHT) + 5; // Center vertically
-            fr.drawString(sName, titleX, titleY, 0xFFFFFFFF);
+
             switch (s.getType()){
                 case Slider : {
                     int sliderWidth = 100;
@@ -104,13 +126,7 @@ public class Gui extends GuiScreen {
                     int sliderPosY = sliderY + 1;
                     Slider slider = new Slider(sliderX, sliderY, sliderWidth, sliderHeight, minValue, maxValue, sliderValue);
                     slider.draw(mc, mouseX, mouseY); // Draw the slider
-                    // Handle mouse events for the slider
-                    if (mouseX >= sliderX && mouseX <= sliderX + sliderWidth && mouseY >= sliderY && mouseY <= sliderY + sliderHeight) {
-                        Mouse.poll();
-                        if (Mouse.isButtonDown(0)) { // Left mouse button
-                            slider.mouseClicked(mouseX, mouseY);
-                        }
-                    }
+                    s.setValue((int)slider.getValue());
                     break;
 
                 }
