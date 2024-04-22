@@ -36,6 +36,7 @@ public class scaffold extends Module {
     static int newYaw = 0;
     private static boolean toggled;
     int tickneeded = 5;
+
     public scaffold() {
         setName("Scaffold");
         setMode("Polar");
@@ -62,8 +63,8 @@ public class scaffold extends Module {
             onDisable();
             return;
         }
-        //mc.gameSettings.keyBindForward = LastBackKey;
-        //mc.gameSettings.keyBindBack = LastForwardKey;
+        // mc.gameSettings.keyBindForward = LastBackKey;
+        // mc.gameSettings.keyBindBack = LastForwardKey;
         toggled = true;
         tickneeded = 5;
         float x = getDigitsAfterDecimal(mc.thePlayer.getPositionVector().xCoord);
@@ -83,33 +84,39 @@ public class scaffold extends Module {
         }
 
         newPitch = 77;
-        //mc.thePlayer.rotationYaw = newYaw;
-        //mc.thePlayer.rotationPitch = newPitch;
+        // mc.thePlayer.rotationYaw = newYaw;
+        // mc.thePlayer.rotationPitch = newPitch;
 
-        //this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
+        // this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing,
+        // this.moveForward, this.movementInput.jump, this.movementInput.sneak));
     }
 
     @Override
     public void onDisable() {
-        //mc.gameSettings.keyBindForward = LastForwardKey;
-        //mc.gameSettings.keyBindBack = LastBackKey;
+        // mc.gameSettings.keyBindForward = LastForwardKey;
+        // mc.gameSettings.keyBindBack = LastBackKey;
         toggled = false;
         tickneeded = 5;
     }
 
     @SubscribeEvent
     public void onTick(TickEvent.RenderTickEvent ev) {
-        if (!toggled) return;
-        if (mc.thePlayer == null) return;
-        if (mc.theWorld == null) return;
+        if (!toggled)
+            return;
+        if (mc.thePlayer == null)
+            return;
+        if (mc.theWorld == null)
+            return;
         EntityPlayerSP player = mc.thePlayer;
         player.setSprinting(false);
         float lastPitch = player.rotationPitch;
         float lastYaw = player.rotationYaw;
         boolean isRoationGood = true;
         if (Math.round(lastPitch) != newPitch) {
-            int pitchDifference = Math.abs(newPitch - Math.round(lastPitch)); // Calculate the difference between current and new pitch
-            int pitchIncrement = Math.max(1, Math.min(10, pitchDifference)); // Adjust the pitch increment based on pitch difference, limited to 1 and 10
+            int pitchDifference = Math.abs(newPitch - Math.round(lastPitch)); // Calculate the difference between
+                                                                              // current and new pitch
+            int pitchIncrement = Math.max(1, Math.min(10, pitchDifference)); // Adjust the pitch increment based on
+                                                                             // pitch difference, limited to 1 and 10
             if (newPitch > Math.round(lastPitch)) {
                 player.setPositionAndRotation2(
                         mc.thePlayer.getPositionVector().xCoord,
@@ -118,8 +125,7 @@ public class scaffold extends Module {
                         mc.thePlayer.rotationYaw,
                         mc.thePlayer.rotationPitch += pitchIncrement,
                         1,
-                        false
-                );
+                        false);
                 isRoationGood = false;
             } else {
                 player.setPositionAndRotation2(
@@ -129,8 +135,7 @@ public class scaffold extends Module {
                         mc.thePlayer.rotationYaw,
                         mc.thePlayer.rotationPitch -= pitchIncrement,
                         1,
-                        false
-                );
+                        false);
                 isRoationGood = false;
             }
         }
@@ -143,11 +148,11 @@ public class scaffold extends Module {
                 isRoationGood = false;
             }
         }
-        if(isRoationGood){
+        if (isRoationGood) {
             Mouse.Rclick();
         }
-        //player.rotationPitch = -90.0F;
-        //player.rotationYaw += ROTATION_SPEED;
+        // player.rotationPitch = -90.0F;
+        // player.rotationYaw += ROTATION_SPEED;
 
         Random rand = new Random();
         strafeMode = rand.nextInt(2);
